@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
 {
     private Vector3 shootDir;
     private float speed;
+    private float damage;
 
     private Rigidbody2D rb = null;
 
@@ -16,10 +17,11 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Setup(Vector3 shootDir, float speed)
+    public void Setup(Vector3 shootDir, float speed, float damage)
     {
         this.shootDir = shootDir;
         this.speed = speed;
+        this.damage = damage;
     }
 
     private void Update()
@@ -31,6 +33,12 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
+            gameObject.SetActive(false);
+        }
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
             gameObject.SetActive(false);
         }
     }

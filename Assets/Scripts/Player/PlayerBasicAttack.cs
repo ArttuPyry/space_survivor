@@ -9,6 +9,7 @@ public class PlayerBasicAttack : MonoBehaviour
     private float time;
 
     public float attackSpeed;
+    public float damage;
 
     public GameObject[] shootSpots;
 
@@ -38,7 +39,7 @@ public class PlayerBasicAttack : MonoBehaviour
         if (bullet != null)
         {
             bullet.transform.position = shootSpot.transform.position;
-            bullet.GetComponent<Bullet>().Setup(Vector3.up, attackSpeed);
+            bullet.GetComponent<Bullet>().Setup(Vector3.up, attackSpeed, damage);
             bullet.SetActive(true);
         }
     }
