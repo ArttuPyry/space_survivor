@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class PlayerMoevement : MonoBehaviour
 {
-
     private CustomInputs inputs = null;
     private Vector2 moveVector = Vector2.zero;
 
     private Rigidbody2D rb = null;
-    private float moveSpeed = 1.5f;
+    private float moveSpeed = 1.0f;
 
     private void Awake()
     {
