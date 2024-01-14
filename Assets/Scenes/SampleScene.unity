@@ -334,8 +334,9 @@ GameObject:
   m_Component:
   - component: {fileID: 763527646}
   - component: {fileID: 763527645}
-  - component: {fileID: 763527644}
   - component: {fileID: 763527647}
+  - component: {fileID: 763527644}
+  - component: {fileID: 763527648}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -355,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3b0970910bbd648a22e4d1413994be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 2
 --- !u!50 &763527645
 Rigidbody2D:
   serializedVersion: 4
@@ -392,7 +393,7 @@ Transform:
   m_GameObject: {fileID: 763527643}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.55912006, z: 0}
+  m_LocalPosition: {x: 0, y: 2.1367402, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -434,6 +435,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.2, y: 0.2}
   m_Direction: 0
+--- !u!114 &763527648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763527643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc5ce35b6be666409424f35c9dc299d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 0.5
+  followPlayerOnX: 1
 --- !u!1 &786106319
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +520,7 @@ Transform:
   m_GameObject: {fileID: 786106319}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 1.464, z: -0.002658274}
+  m_LocalPosition: {x: 0.03, y: 2.124, z: -0.002658274}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -527,7 +542,7 @@ GameObject:
   - component: {fileID: 927083105}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
