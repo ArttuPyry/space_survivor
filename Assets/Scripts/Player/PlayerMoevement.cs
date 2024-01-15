@@ -45,4 +45,14 @@ public class PlayerMoevement : MonoBehaviour
     {
         rb.velocity = moveVector * moveSpeed;
     }
+
+    private void Update()
+    {
+        // Top and bottom game borders
+        if (transform.position.y >= 1.5f) transform.position = new Vector2(transform.position.x, 1.5f);
+        if (transform.position.y <= -1.5f) transform.position = new Vector2(transform.position.x, -1.5f);
+        // Left and right game borders
+        if (transform.position.x >= 0.8f) transform.position = new Vector2(0.8f, transform.position.y);
+        if (transform.position.x <= -0.8f) transform.position = new Vector2(-0.8f, transform.position.y);
+    }
 }

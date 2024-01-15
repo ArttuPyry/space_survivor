@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public int currentShieldAmount;
+    public int maxShieldAmount;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         
     }
+
+    public void TakeHit()
+    {
+        if (currentShieldAmount > 0)
+        {
+            currentShieldAmount -= 1;
+        } else
+        {
+            print("die");
+        }
+    }
+
 }

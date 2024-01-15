@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     private Vector3 shootDir;
     private float speed;
-    private float damage;
 
     private Rigidbody2D rb = null;
 
@@ -15,11 +14,10 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Setup(Vector3 shootDir, float speed, float damage)
+    public void Setup(Vector3 shootDir, float speed)
     {
         this.shootDir = shootDir;
         this.speed = speed;
-        this.damage = damage;
     }
 
     private void Update()
@@ -27,7 +25,7 @@ public class Bullet : MonoBehaviour
         rb.velocity = shootDir * speed;
 
         // if outside of map disable bullet
-        if (transform.position.y >= 2f) gameObject.SetActive(false);
+        if (transform.position.y <= -2f) gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -37,10 +35,9 @@ public class Bullet : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
-            gameObject.SetActive(false);
+            collision.gameObject.GetComponent<Player>().TakeHit();
         }
     }
 }
