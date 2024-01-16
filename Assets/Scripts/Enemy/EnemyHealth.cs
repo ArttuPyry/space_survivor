@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public float maxHealth;
+    [SerializeField] private float maxHealth;
     private float currentHealth;
 
 

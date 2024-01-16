@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public int currentShieldAmount;
-    public int maxShieldAmount;
+    [SerializeField] private int currentShieldAmount;
+    [SerializeField] private int maxShieldAmount;
 
     void Start()
     {

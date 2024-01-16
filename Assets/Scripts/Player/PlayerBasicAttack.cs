@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class PlayerBasicAttack : MonoBehaviour
 {
-    public float attackCoolDown;
+    [SerializeField] private float attackCoolDown;
     private float time;
 
-    public float bulletSpeed;
-    public float damage;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float damage;
 
-    public GameObject[] shootSpots;
-    public GameObject pooler;
+    [SerializeField] private GameObject[] shootSpots;
+    [SerializeField] private GameObject[] aimSpots;
+    [SerializeField] private GameObject pooler;
 
     private void Start()
     {
@@ -28,19 +29,20 @@ public class PlayerBasicAttack : MonoBehaviour
             
             for (int i = 0; i < shootSpots.Length; i++)
             {
-                Attack(shootSpots[i]);
+                Attack(shootSpots[i], aimSpots[i]);
             }
         }
     }
 
-    private void Attack(GameObject shootSpot)
+    private void Attack(GameObject shootSpot, GameObject aimSpot)
     {
         GameObject bullet = pooler.GetComponent<ObjectPooler>().GetPooledObject();
 
         if (bullet != null)
         {
             bullet.transform.position = shootSpot.transform.position;
-            bullet.GetComponent<Bullet>().Setup(Vector3.up, bulletSpeed, damage);
+            Vector3 shootDir = (aimSpot.transform.position - shootSpot.transform.position).normalized;
+            bullet.GetComponent<ModularBullet>().Setup(shootDir, bulletSpeed, damage);
             bullet.SetActive(true);
         }
     }

@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class ObjectPooler : MonoBehaviour
 {
 
-    public static ObjectPooler instance;
+    [SerializeField] private static ObjectPooler instance;
 
     private List<GameObject> pooledObject = new List<GameObject>();
-    private int amountToBool = 20;
+    [SerializeField] private int amountToBool = 20;
 
     [SerializeField] private GameObject prefab;
 
-    public bool willExpand = true;
-    public int maxAmount = 50;
+    [SerializeField] private bool willExpand = true;
+    [SerializeField] private int maxAmount = 50;
 
     private void Awake()
     {
@@ -41,15 +42,17 @@ public class ObjectPooler : MonoBehaviour
             if (!pooledObject[i].activeInHierarchy)
             {
                 return pooledObject[i];
-            }
-        }
-        if (willExpand)
-        {
-            if (pooledObject.Count < maxAmount)
+            } else if (willExpand)
             {
-                GameObject obj = Instantiate(prefab);
-                obj.SetActive(false);
-                pooledObject.Add(obj);
+                if (pooledObject.Count < maxAmount)
+                {
+                    GameObject obj = Instantiate(prefab);
+                    obj.SetActive(false);
+                    pooledObject.Add(obj);
+                }
+            } else
+            {
+                return null;
             }
         }
         return null;

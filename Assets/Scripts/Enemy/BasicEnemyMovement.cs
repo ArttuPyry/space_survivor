@@ -6,8 +6,8 @@ using UnityEngine.Windows;
 public class BasicEnemyMovement : MonoBehaviour
 {
     private Rigidbody2D rb = null;
-    public float movementSpeed;
-    public bool followPlayerOnX;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private bool followPlayerOnX;
     private GameObject player;
 
     private void Awake()

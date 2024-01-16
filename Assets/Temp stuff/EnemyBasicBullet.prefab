@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2955234889557307222}
   - component: {fileID: 5310017051341999041}
   - component: {fileID: 6173981949430245769}
-  - component: {fileID: 6350119231862734750}
+  - component: {fileID: 3548803209462340262}
   m_Layer: 7
   m_Name: EnemyBasicBullet
   m_TagString: Untagged
@@ -97,7 +97,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.08, y: 0.17}
   m_Direction: 0
---- !u!114 &6350119231862734750
+--- !u!114 &3548803209462340262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,9 +106,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 298822807492611431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f7ae442d4eaac44a69035d4d031a80, type: 3}
+  m_Script: {fileID: 11500000, guid: 9524f47b85d15e94fb64c9111b160847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifeTime: 3
+  playersAttack: 0
+  splittingBullet: 1
+  splitAmount: 5
+  startAngle: 0
+  endAngle: 360
 --- !u!1 &5973455744282529687
 GameObject:
   m_ObjectHideFlags: 0
