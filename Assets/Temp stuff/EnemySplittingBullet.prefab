@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6173981949430245769}
   - component: {fileID: 3548803209462340262}
   m_Layer: 7
-  m_Name: EnemyBasicBullet
+  m_Name: EnemySplittingBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,10 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9524f47b85d15e94fb64c9111b160847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 10
+  lifeTime: 2
   playersAttack: 0
-  splittingBullet: 0
-  splitAmount: 0
+  splittingBullet: 1
+  splitAmount: 10
   startAngle: 0
   endAngle: 360
 --- !u!1 &5973455744282529687

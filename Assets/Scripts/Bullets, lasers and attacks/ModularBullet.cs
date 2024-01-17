@@ -5,6 +5,7 @@ using UnityEngine;
 public class ModularBullet : MonoBehaviour
 {
     [SerializeField] private float lifeTime;
+    [SerializeField] private float time;
 
     [SerializeField] private bool playersAttack;
 
@@ -30,14 +31,15 @@ public class ModularBullet : MonoBehaviour
         this.shootDir = shootDir;
         this.speed = speed;
         this.damage = damage;
+        time = lifeTime;
     }
 
     private void Update()
     {
         rb.velocity = shootDir * speed;
 
-        lifeTime -= Time.deltaTime;
-        if (lifeTime <= 0.0f)
+        time -= Time.deltaTime;
+        if (time <= 0.0f)
         {
             if (splittingBullet)
             {
