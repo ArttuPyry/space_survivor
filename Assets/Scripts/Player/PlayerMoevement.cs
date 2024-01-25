@@ -11,6 +11,14 @@ public class PlayerMoevement : MonoBehaviour
     private Rigidbody2D rb = null;
     private float moveSpeed = 1.0f;
 
+    public SpriteRenderer shipSprite;
+    public Sprite shipDefault;
+    public Sprite shipTurn;
+    public SpriteRenderer fireSprite;
+    public Sprite fireDefault;
+    public Sprite fireBoost;
+    public Sprite fireLow;
+
     private void Awake()
     {
         inputs = new CustomInputs();
@@ -44,6 +52,29 @@ public class PlayerMoevement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = moveVector * moveSpeed;
+
+        if (moveVector.x < 0)
+        {
+            shipSprite.sprite = shipTurn;
+            shipSprite.flipX = false;
+        } else if (moveVector.x > 0) {
+            shipSprite.sprite = shipTurn;
+            shipSprite.flipX = true;
+        } else
+        {
+            shipSprite.sprite = shipDefault;
+        }
+
+        if (moveVector.y > 0)
+        {
+            fireSprite.sprite = fireBoost;
+        } else if (moveVector.y < 0)
+        {
+            fireSprite.sprite = fireLow;
+        } else
+        {
+            fireSprite.sprite = fireDefault;
+        }
     }
 
     private void Update()
