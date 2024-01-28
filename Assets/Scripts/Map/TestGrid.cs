@@ -21,8 +21,9 @@ public class TestGrid : MonoBehaviour
     public GameObject boss;
 
     private Dictionary<int, List<GameObject>> yGroups = new Dictionary<int, List<GameObject>>();
-    public List<LineRenderer> lineRenderers;
     private Dictionary<int, List<GameObject>> paths = new Dictionary<int, List<GameObject>>();
+    public List<LineRenderer> lineRenderers;
+    public List<Vector2> takenGridGaps;
 
     public void RandomizeThisthing()
     {
@@ -30,6 +31,17 @@ public class TestGrid : MonoBehaviour
         {
             paths[i].Clear();
         }
+
+        for (int x = 0; x < yGroups.Count; x++)
+        {
+            for (int d = 0; d < yGroups[x].Count; d++)
+            {
+                Destroy(yGroups[x][d]);
+            }
+        }
+        yGroups.Clear();
+        takenGridGaps.Clear();
+        GenerateGrid();
         MakePaths();
         DrawLines();
     }
@@ -53,9 +65,6 @@ public class TestGrid : MonoBehaviour
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                // Random offset
-                float offsetX = Random.Range(-0.4f, 0.4f);
-                float offsetY = Random.Range(-0.4f, 0.4f);
                 // Calculate the position relative to the center of the grid
                 float xPos = (x * spacingX) - centerX;
                 float yPos = (y * spacingY) - centerY;
@@ -90,16 +99,39 @@ public class TestGrid : MonoBehaviour
 
                 if (d == 0)
                 {
-                    randomIndex = Random.Range(0, yGroups[d].Count);
+                    do
+                    {
+                        randomIndex = Random.Range(0, yGroups[d].Count);
+                        
+                    } while (takenGridGaps.Contains((start.transform.position + yGroups[d][randomIndex].transform.position) / 2));
+
+                    if (start.transform.position.x != yGroups[d][randomIndex].transform.position.x)
+                    {
+                        takenGridGaps.Add((start.transform.position + yGroups[d][randomIndex].transform.position) / 2);
+                    } 
                 }
                 else
                 {
-                    print(lastIndex);
-                    int min = lastIndex - 2;
-                    int max = lastIndex + 2;
+                    int min = lastIndex - 1;
+                    int max = lastIndex + 1;
                     if (min < 0) { min = 0; }
                     if (max > yGroups[d].Count) { max = yGroups[d].Count; }
-                    randomIndex = Random.Range(min, max);
+
+                    do
+                    {
+                        randomIndex = Random.Range(min, max);
+                        
+                        if (randomIndex == min)
+                        {
+                            int extraRandi = Random.Range(1, 2);
+                            if (extraRandi == 1) randomIndex = Random.Range(min, max);
+                        }
+                    } while (takenGridGaps.Contains((yGroups[d - 1][lastIndex].transform.position + yGroups[d][randomIndex].transform.position) / 2));
+                    
+                    if (yGroups[d - 1][lastIndex].transform.position.x != yGroups[d][randomIndex].transform.position.x)
+                    {
+                        takenGridGaps.Add((yGroups[d - 1][lastIndex].transform.position + yGroups[d][randomIndex].transform.position) / 2);
+                    }
                 }
 
                 lastIndex = randomIndex;
@@ -113,6 +145,19 @@ public class TestGrid : MonoBehaviour
 
     private void DrawLines()
     {
+        for (int x = 0; x < yGroups.Count; x++)
+        {
+            for (int d = 0; d < yGroups[x].Count; d++)
+            {
+                // Random offset
+                float offsetX = Random.Range(-0.2f, 0.2f);
+                float offsetY = Random.Range(-0.2f, 0.2f);
+                Vector3 currentPosition = (yGroups[x][d].transform.localPosition);
+                Vector3 newPosition = new Vector3(currentPosition.x + offsetX, currentPosition.y + offsetY, currentPosition.z);
+                yGroups[x][d].transform.localPosition = newPosition;
+            }
+        }
+
         for (int i = 0; i < lineRenderers.Count; i++)
         {
             List<GameObject> path = paths.Values.ToList()[i];

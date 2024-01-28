@@ -1429,7 +1429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapMarker: {fileID: 5380079892733917242, guid: 1ad455c3ff35d0740819ad0453093440, type: 3}
   gridSizeX: 5
-  gridSizeY: 8
+  gridSizeY: 7
   spacingX: 1
   spacingY: 1.2
   minMarkerDisable: 1
@@ -1440,6 +1440,7 @@ MonoBehaviour:
   - {fileID: 836914354}
   - {fileID: 859921222}
   - {fileID: 132624783}
+  takenGridGaps: []
 --- !u!4 &2009996262
 Transform:
   m_ObjectHideFlags: 0
