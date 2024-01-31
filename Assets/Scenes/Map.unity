@@ -1432,15 +1432,12 @@ MonoBehaviour:
   gridSizeY: 7
   spacingX: 1
   spacingY: 1.2
-  minMarkerDisable: 1
-  maxMarkerDisable: 4
   start: {fileID: 637003804}
   boss: {fileID: 1624726478}
   lineRenderers:
   - {fileID: 836914354}
   - {fileID: 859921222}
   - {fileID: 132624783}
-  takenGridGaps: []
 --- !u!4 &2009996262
 Transform:
   m_ObjectHideFlags: 0

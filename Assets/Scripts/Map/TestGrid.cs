@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,16 +15,13 @@ public class TestGrid : MonoBehaviour
     public float spacingX = 1.0f;
     public float spacingY = 2.0f;
 
-    public int minMarkerDisable;
-    public int maxMarkerDisable;
-
     public GameObject start;
     public GameObject boss;
 
     private Dictionary<int, List<GameObject>> yGroups = new Dictionary<int, List<GameObject>>();
     private Dictionary<int, List<GameObject>> paths = new Dictionary<int, List<GameObject>>();
+    public List<Vector2[]> takenGridGaps = new List<Vector2[]>();
     public List<LineRenderer> lineRenderers;
-    public List<Vector2> takenGridGaps;
 
     public void RandomizeThisthing()
     {
@@ -31,13 +29,16 @@ public class TestGrid : MonoBehaviour
         {
             paths[i].Clear();
         }
+        paths.Clear();
 
         for (int x = 0; x < yGroups.Count; x++)
         {
             for (int d = 0; d < yGroups[x].Count; d++)
             {
                 Destroy(yGroups[x][d]);
+                
             }
+            yGroups[x].Clear();
         }
         yGroups.Clear();
         takenGridGaps.Clear();
@@ -50,9 +51,6 @@ public class TestGrid : MonoBehaviour
         GenerateGrid();
         MakePaths();
         DrawLines();
-
-        print((yGroups[0][0].transform.position + yGroups[1][1].transform.position) / 2);
-        print((yGroups[0][1].transform.position + yGroups[1][0].transform.position) / 2);
     }
 
     private void GenerateGrid()
@@ -90,71 +88,119 @@ public class TestGrid : MonoBehaviour
             paths[i] = new List<GameObject>();
             paths[i].Add(start);
             int lastIndex = 0;
+            int straightCount = 0;
 
-            for (int d = 0; d < yGroups.Count; d++)
+            for (int j = 0; j < yGroups.Count; j++)
             {
-                List<GameObject> row = yGroups.Values.ToList()[d];
+                List<GameObject> row = yGroups.Values.ToList()[j];
 
                 int randomIndex;
 
-                if (d == 0)
+                if (j == 0)
                 {
-                    do
-                    {
-                        randomIndex = Random.Range(0, yGroups[d].Count);
-                        
-                    } while (takenGridGaps.Contains((start.transform.position + yGroups[d][randomIndex].transform.position) / 2));
-
-                    if (start.transform.position.x != yGroups[d][randomIndex].transform.position.x)
-                    {
-                        takenGridGaps.Add((start.transform.position + yGroups[d][randomIndex].transform.position) / 2);
-                    } 
+                    randomIndex = Random.Range(0, yGroups[j].Count);
                 }
                 else
                 {
                     int min = lastIndex - 1;
                     int max = lastIndex + 1;
-                    if (min < 0) { min = 0; }
-                    if (max > yGroups[d].Count) { max = yGroups[d].Count; }
+                    if (min < 0)
+                    {
+                        min = 0;
+                    }
 
-                    do
+
+                    if (max >= yGroups[j].Count)
                     {
-                        randomIndex = Random.Range(min, max);
-                        
-                        if (randomIndex == min)
+                        max = yGroups[j].Count - 1;
+                    }
+
+                    randomIndex = Random.Range(min, max);
+
+                    if (yGroups[j - 1][lastIndex].transform.position.x == yGroups[j][randomIndex].transform.position.x)
+                    {
+                        straightCount++;
+                    } 
+
+                    if (straightCount == 2)
+                    {
+                        randomIndex = max;
+                        straightCount = 0;
+                    }
+
+                    if (lastIndex != min && randomIndex != max)
+                    {
+                        if (IsVectorPairInList(yGroups[j - 1][lastIndex - 1].transform.position, yGroups[j][randomIndex + 1].transform.position))
                         {
-                            int extraRandi = Random.Range(1, 2);
-                            if (extraRandi == 1) randomIndex = Random.Range(min, max);
+                            randomIndex = max;
+                            if (lastIndex != max && randomIndex != min)
+                            {
+                                if (IsVectorPairInList(yGroups[j - 1][lastIndex + 1].transform.position, yGroups[j][randomIndex - 1].transform.position))
+                                {
+                                    randomIndex = lastIndex;
+                                }
+                            }
                         }
-                    } while (takenGridGaps.Contains((yGroups[d - 1][lastIndex].transform.position + yGroups[d][randomIndex].transform.position) / 2));
-                    
-                    if (yGroups[d - 1][lastIndex].transform.position.x != yGroups[d][randomIndex].transform.position.x)
+                    }
+
+                    if (lastIndex != max && randomIndex != min)
                     {
-                        takenGridGaps.Add((yGroups[d - 1][lastIndex].transform.position + yGroups[d][randomIndex].transform.position) / 2);
+                        if (IsVectorPairInList(yGroups[j - 1][lastIndex + 1].transform.position, yGroups[j][randomIndex - 1].transform.position))
+                        {
+                            randomIndex = min;
+                            if (lastIndex != min && randomIndex != max)
+                            {
+                                if (IsVectorPairInList(yGroups[j - 1][lastIndex - 1].transform.position, yGroups[j][randomIndex + 1].transform.position))
+                                {
+                                    randomIndex = lastIndex;
+                                }
+                            }
+                        }
+                    }
+
+                    // If line doesn't go staright up add it to taken grid gaps list
+                    if (yGroups[j - 1][lastIndex].transform.position.x != yGroups[j][randomIndex].transform.position.x)
+                    {
+                        Vector2[] tmpArray = new Vector2[]
+                        {
+                            yGroups[j - 1][lastIndex].transform.position,
+                            yGroups[j][randomIndex].transform.position
+                        };
+                        takenGridGaps.Add(tmpArray);
                     }
                 }
 
+                lastIndex = 0;
                 lastIndex = randomIndex;
 
                 paths[i].Add(row[randomIndex]);
             }
-
+            straightCount = 0;
             paths[i].Add(boss);
         }
     }
 
+    bool IsVectorPairInList(Vector2 vector1, Vector2 vector2)
+    {
+        foreach (var vectorArray in takenGridGaps)
+        {
+            if (vectorArray[0] == vector1 && vectorArray[1] == vector2) {  return true; }
+        }
+        return false;
+    }
+
     private void DrawLines()
     {
-        for (int x = 0; x < yGroups.Count; x++)
+        for (int i = 0; i < yGroups.Count; i++)
         {
-            for (int d = 0; d < yGroups[x].Count; d++)
+            for (int j = 0; j < yGroups[i].Count; j++)
             {
                 // Random offset
                 float offsetX = Random.Range(-0.2f, 0.2f);
                 float offsetY = Random.Range(-0.2f, 0.2f);
-                Vector3 currentPosition = (yGroups[x][d].transform.localPosition);
+                Vector3 currentPosition = (yGroups[i][j].transform.localPosition);
                 Vector3 newPosition = new Vector3(currentPosition.x + offsetX, currentPosition.y + offsetY, currentPosition.z);
-                yGroups[x][d].transform.localPosition = newPosition;
+                yGroups[i][j].transform.localPosition = newPosition;
             }
         }
 
@@ -166,31 +212,9 @@ public class TestGrid : MonoBehaviour
             lineRenderers[i].endColor = Color.yellow;
             lineRenderers[i].startWidth = 0.1f;
             lineRenderers[i].endWidth = 0.1f;
-            for (int b = 0; b < path.Count; b++)
+            for (int j = 0; j < path.Count; j++)
             {
-                lineRenderers[i].SetPosition(b, path[b].transform.position);
-            }
-        }
-    }
-
-
-    private void DisableMapMarkers()
-    {
-        for (int i = 0; i < yGroups.Count; i++)
-        {
-            List<GameObject> row = yGroups.Values.ToList()[i];
-            int disableAmount = Random.Range(minMarkerDisable, maxMarkerDisable);
-
-            for (int a = 0; a < disableAmount; a++)
-            {
-                int randomIndex;
-
-                do
-                {
-                    randomIndex = Random.Range(0, row.Count);
-                } while (!row[randomIndex].activeSelf);
-
-                row[randomIndex].SetActive(false);
+                lineRenderers[i].SetPosition(j, path[j].transform.position);
             }
         }
     }
