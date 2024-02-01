@@ -1,27 +1,23 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class TestGrid : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
-    public GameObject mapMarker;
-    public int gridSizeX;
-    public int gridSizeY;
-    public float spacingX = 1.0f;
-    public float spacingY = 2.0f;
+    [SerializeField] private GameObject mapMarker;
+    [SerializeField] private int gridSizeX;
+    [SerializeField] private int gridSizeY;
+    [SerializeField] private float spacingX = 1.0f;
+    [SerializeField] private float spacingY = 2.0f;
 
-    public GameObject start;
-    public GameObject boss;
+    [SerializeField] private GameObject start;
+    [SerializeField] private GameObject boss;
 
     private Dictionary<int, List<GameObject>> yGroups = new Dictionary<int, List<GameObject>>();
     private Dictionary<int, List<GameObject>> paths = new Dictionary<int, List<GameObject>>();
-    public List<Vector2[]> takenGridGaps = new List<Vector2[]>();
-    public List<LineRenderer> lineRenderers;
+    private List<Vector2[]> takenGridGaps = new List<Vector2[]>();
+    [SerializeField] private List<LineRenderer> lineRenderers;
 
     public void RandomizeThisthing()
     {
@@ -36,7 +32,7 @@ public class TestGrid : MonoBehaviour
             for (int d = 0; d < yGroups[x].Count; d++)
             {
                 Destroy(yGroups[x][d]);
-                
+
             }
             yGroups[x].Clear();
         }
@@ -83,6 +79,7 @@ public class TestGrid : MonoBehaviour
 
     private void MakePaths()
     {
+        // Linerenderer amount = path amount
         for (int i = 0; i < lineRenderers.Count; i++)
         {
             paths[i] = new List<GameObject>();
@@ -90,44 +87,49 @@ public class TestGrid : MonoBehaviour
             int lastIndex = 0;
             int straightCount = 0;
 
+            // Get path spot from every row
             for (int j = 0; j < yGroups.Count; j++)
             {
                 List<GameObject> row = yGroups.Values.ToList()[j];
 
                 int randomIndex;
 
+                // first always random
                 if (j == 0)
                 {
                     randomIndex = Random.Range(0, yGroups[j].Count);
                 }
                 else
                 {
+                    // Get last and make sure it doesn't go outside of list
                     int min = lastIndex - 1;
                     int max = lastIndex + 1;
                     if (min < 0)
                     {
                         min = 0;
                     }
-
-
                     if (max >= yGroups[j].Count)
                     {
                         max = yGroups[j].Count - 1;
                     }
 
+                    // Randomize index
                     randomIndex = Random.Range(min, max);
 
+                    // Add straight count
                     if (yGroups[j - 1][lastIndex].transform.position.x == yGroups[j][randomIndex].transform.position.x)
                     {
                         straightCount++;
-                    } 
+                    }
 
+                    // If too many straights in a row make randomidex max (max also prevents paths leaning too much left)
                     if (straightCount == 2)
                     {
                         randomIndex = max;
                         straightCount = 0;
                     }
 
+                    // Check if paths cross and make it go other way but even that crosses then go staright
                     if (lastIndex != min && randomIndex != max)
                     {
                         if (IsVectorPairInList(yGroups[j - 1][lastIndex - 1].transform.position, yGroups[j][randomIndex + 1].transform.position))
@@ -142,7 +144,7 @@ public class TestGrid : MonoBehaviour
                             }
                         }
                     }
-
+                    // same as last but other way
                     if (lastIndex != max && randomIndex != min)
                     {
                         if (IsVectorPairInList(yGroups[j - 1][lastIndex + 1].transform.position, yGroups[j][randomIndex - 1].transform.position))
@@ -180,11 +182,12 @@ public class TestGrid : MonoBehaviour
         }
     }
 
+    // This check if Vector2 x2 are in taken grid gaps array ( used to make sure that paths don't cross )
     bool IsVectorPairInList(Vector2 vector1, Vector2 vector2)
     {
         foreach (var vectorArray in takenGridGaps)
         {
-            if (vectorArray[0] == vector1 && vectorArray[1] == vector2) {  return true; }
+            if (vectorArray[0] == vector1 && vectorArray[1] == vector2) { return true; }
         }
         return false;
     }
@@ -195,7 +198,7 @@ public class TestGrid : MonoBehaviour
         {
             for (int j = 0; j < yGroups[i].Count; j++)
             {
-                // Random offset
+                // Random offset for better visuals
                 float offsetX = Random.Range(-0.2f, 0.2f);
                 float offsetY = Random.Range(-0.2f, 0.2f);
                 Vector3 currentPosition = (yGroups[i][j].transform.localPosition);
@@ -204,6 +207,7 @@ public class TestGrid : MonoBehaviour
             }
         }
 
+        // This draws the lines duh
         for (int i = 0; i < lineRenderers.Count; i++)
         {
             List<GameObject> path = paths.Values.ToList()[i];
