@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     private float currentHealth;
 
+    private int expAmount = 50;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            ExperienceManager.Instance.AddExperience(expAmount);
             gameObject.SetActive(false);
         }
     }
