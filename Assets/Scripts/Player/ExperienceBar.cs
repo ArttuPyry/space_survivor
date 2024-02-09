@@ -31,6 +31,12 @@ public class ExperienceBar : MonoBehaviour
     private void HandleExperienceChange(int NewExperience)
     {
         current += NewExperience;
+        if (current >= maximum)
+        {
+            minimum = maximum;
+            int tmpInt = (maximum / 2) + maximum;
+            maximum += tmpInt;
+        }
         GetCurrentFill();
     }
 }

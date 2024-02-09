@@ -5,10 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private int currentShieldAmount;
+    public int currentShieldAmount;
     [SerializeField] private int maxShieldAmount;
     [SerializeField] private GameObject[] shields;
-    [SerializeField] private SpriteRenderer shield;
     [SerializeField] private Material flashMaterial;
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private float duration;
@@ -36,6 +35,17 @@ public class Player : MonoBehaviour
     private void Update()
     {
         time -= Time.deltaTime;
+    }
+
+    public void ShieldTest()
+    {
+        for (int i = 0; i < shields.Length; i++)
+        {
+            if (i < currentShieldAmount)
+            {
+                shields[i].SetActive(true);
+            }
+        }
     }
 
     public void TakeHit()
@@ -99,6 +109,8 @@ public class Player : MonoBehaviour
         if (currentExperience >= maxExperience)
         {
             level++;
+            int tmpInt = (maxExperience / 2) + maxExperience;
+            maxExperience += tmpInt;
         }
     }
 }

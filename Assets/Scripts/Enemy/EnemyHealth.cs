@@ -7,7 +7,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     private float currentHealth;
 
-    private int expAmount = 50;
+    private int expAmount = 75;
 
     private void Awake()
     {
