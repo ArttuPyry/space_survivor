@@ -5,7 +5,7 @@ using UnityEngine;
 public class ExperienceManager : MonoBehaviour
 {
     public static ExperienceManager Instance;
-    public delegate void ExperienceChangeHandler(int amount);
+    public delegate void ExperienceChangeHandler(float amount);
     public event ExperienceChangeHandler OnExperienceChange;
 
     public void Awake()
@@ -20,7 +20,7 @@ public class ExperienceManager : MonoBehaviour
         }
     }
 
-    public void AddExperience(int amount)
+    public void AddExperience(float amount)
     {
         OnExperienceChange?.Invoke(amount);
     }

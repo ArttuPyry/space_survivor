@@ -6,10 +6,17 @@ using UnityEngine.UI;
 
 public class ExperienceBar : MonoBehaviour
 {
-    [SerializeField] private int minimum;
-    [SerializeField] private int maximum;
+    [SerializeField] private GameObject player;
+    [SerializeField] private float minimum;
+    [SerializeField] private float maximum;
     [SerializeField] private Image mask;
-    private int current;
+    private float current;
+
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log(player);
+    }
 
     private void GetCurrentFill()
     {
@@ -28,13 +35,13 @@ public class ExperienceBar : MonoBehaviour
         ExperienceManager.Instance.OnExperienceChange -= HandleExperienceChange;
     }
 
-    private void HandleExperienceChange(int NewExperience)
+    private void HandleExperienceChange(float NewExperience)
     {
-        current += NewExperience;
+        current += NewExperience * player.GetComponent<Player>().expMultiplier;
         if (current >= maximum)
         {
             minimum = maximum;
-            int tmpInt = (maximum / 2) + maximum;
+            float tmpInt = (maximum / 2) + maximum;
             maximum += tmpInt;
         }
         GetCurrentFill();

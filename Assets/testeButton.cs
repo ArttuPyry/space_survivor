@@ -17,7 +17,6 @@ public class testeButton : MonoBehaviour
 
     public void AddPerk()
     {
-        Debug.Log("DEEZ");
         perk.Apply(player.gameObject);
     }
 }

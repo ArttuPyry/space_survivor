@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [CreateAssetMenu(menuName = "Perks/Shield")]
-public class PlusOneShield : Perk
+public class PerkShield : Perk
 {
+    public int shieldAmount;
     public override void Apply(GameObject player)
     {
-        player.GetComponent<Player>().currentShieldAmount += 1;
-        player.GetComponent<Player>().ShieldTest();
+        player.GetComponent<Player>().currentShieldAmount += shieldAmount;
+        player.GetComponent<Player>().UpdateShield();
     }
 }

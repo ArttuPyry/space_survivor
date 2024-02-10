@@ -9,6 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd4afcdc9571d94b96f975e617526ab, type: 3}
-  m_Name: shield
+  m_Script: {fileID: 11500000, guid: ebfff2f5f9ba8854e8edc0f7a3c405b5, type: 3}
+  m_Name: TestDamage
   m_EditorClassIdentifier: 
+  perkName: TestDamage
+  perkDescription: MORE DMG
+  perkSprite: {fileID: 0}
+  attackDamageAmount: 2

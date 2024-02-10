@@ -5,30 +5,31 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
+
+    // Shield
     public int currentShieldAmount;
     [SerializeField] private int maxShieldAmount;
     [SerializeField] private GameObject[] shields;
+
+    // Flash effect and iframes
     [SerializeField] private Material flashMaterial;
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private float duration;
-
-    [SerializeField] private float iFramesLengthInSec;
+    public float iFramesLengthInSec = 1f;
     private float time;
 
-    private int currentExperience;
-    private int maxExperience = 100;
+    // Experience
+    public float currentExperience;
+    private float maxExperience = 100;
     private int level;
-    
+    public float expMultiplier = 1;
+
+    // Luck
+    public int luck;
 
     void Start()
     {
-        for (int i = 0; i < shields.Length; i++)
-        {
-            if (i < currentShieldAmount)
-            {
-                shields[i].SetActive(true);
-            }
-        }
+        UpdateShield();
     }
 
 
@@ -37,8 +38,13 @@ public class Player : MonoBehaviour
         time -= Time.deltaTime;
     }
 
-    public void ShieldTest()
+    public void UpdateShield()
     {
+        if (currentShieldAmount > maxShieldAmount)
+        {
+            currentShieldAmount = maxShieldAmount;
+        }
+
         for (int i = 0; i < shields.Length; i++)
         {
             if (i < currentShieldAmount)
@@ -103,13 +109,13 @@ public class Player : MonoBehaviour
         ExperienceManager.Instance.OnExperienceChange -= HandleExperienceChange;
     }
 
-    private void HandleExperienceChange(int NewExperience)
+    private void HandleExperienceChange(float NewExperience)
     {
-        currentExperience += NewExperience;
+        currentExperience += NewExperience * expMultiplier;
         if (currentExperience >= maxExperience)
         {
             level++;
-            int tmpInt = (maxExperience / 2) + maxExperience;
+            float tmpInt = (maxExperience / 2) + maxExperience;
             maxExperience += tmpInt;
         }
     }

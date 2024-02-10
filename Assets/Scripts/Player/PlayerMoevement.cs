@@ -9,7 +9,7 @@ public class PlayerMoevement : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
 
     private Rigidbody2D rb = null;
-    private float moveSpeed = 1.0f;
+    public float moveSpeed = 1.0f;
 
     public SpriteRenderer shipSprite;
     public Sprite shipDefault;
