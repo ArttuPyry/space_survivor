@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28ffbf57c92fa5a429e4bb8b5948d1e5, type: 3}
-  m_Name: Test
+  m_Name: TestLCK
   m_EditorClassIdentifier: 
-  perkName: 
-  perkDescription: 
+  perkName: Luck up
+  perkDescription: Gives 1 luck
   perkSprite: {fileID: 0}
   attackSpeed: 0
   attackDamage: 0
   bulletSpeed: 0
   crtiMultiplier: 0
   expMultiplier: 0
-  iFrames: 1
-  luck: 0
+  iFrames: 0
+  luck: 1
   movementSpeed: 0
   shield: 0

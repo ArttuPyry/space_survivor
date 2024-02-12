@@ -9,10 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 090307c9ffafec142862457f6303e90c, type: 3}
-  m_Name: asd
+  m_Script: {fileID: 11500000, guid: 28ffbf57c92fa5a429e4bb8b5948d1e5, type: 3}
+  m_Name: TestMS
   m_EditorClassIdentifier: 
-  perkName: asd
-  perkDescription: asd
+  perkName: Mega speed
+  perkDescription: Gives very little ms
   perkSprite: {fileID: 0}
-  attackSpeedAmount: 1
+  attackSpeed: 0
+  attackDamage: 0
+  bulletSpeed: 0
+  crtiMultiplier: 0
+  expMultiplier: 0
+  iFrames: 0
+  luck: 0
+  movementSpeed: 1
+  shield: 0

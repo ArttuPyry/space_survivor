@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     // Experience
     public float currentExperience;
     private float maxExperience = 100;
-    private int level;
+    private int level = 1;
     public float expMultiplier = 1;
 
     // Luck
@@ -117,6 +117,7 @@ public class Player : MonoBehaviour
             level++;
             float tmpInt = (maxExperience / 2) + maxExperience;
             maxExperience += tmpInt;
+            this.GetComponent<PlayerPerkManager>().OpenLevelUpMenu();
         }
     }
 }

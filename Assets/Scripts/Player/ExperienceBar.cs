@@ -15,7 +15,6 @@ public class ExperienceBar : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        Debug.Log(player);
     }
 
     private void GetCurrentFill()
