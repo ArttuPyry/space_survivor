@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28ffbf57c92fa5a429e4bb8b5948d1e5, type: 3}
-  m_Name: TestMS
+  m_Name: AttackSpeedRarePerk
   m_EditorClassIdentifier: 
-  perkName: Mega speed
-  perkDescription: Gives very little ms
+  perkName: Rare Attack Speed Upgrade
+  perkDescription: Rare Attack Speed Upgrade
   perkSprite: {fileID: 0}
-  attackSpeed: 0
+  attackSpeed: 3
   attackDamage: 0
   bulletSpeed: 0
-  crtiMultiplier: 0
+  critMultiplier: 0
   expMultiplier: 0
   iFrames: 0
   luck: 0
-  movementSpeed: 1
+  movementSpeed: 0
   shield: 0

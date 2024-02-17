@@ -8,7 +8,7 @@ public class PerkStats : Perk
     [SerializeField] private float attackSpeed;
     [SerializeField] private float attackDamage;
     [SerializeField] private float bulletSpeed;
-    [SerializeField] private float crtiMultiplier;
+    [SerializeField] private float critMultiplier;
     [SerializeField] private float expMultiplier;
     [SerializeField] private float iFrames;
     [SerializeField] private int luck;
@@ -38,8 +38,8 @@ public class PerkStats : Perk
         // Bullet speed
         if (bulletSpeed != 0f)
         {
-            float dividedAttackCD = bulletSpeed / 10f;
-            player.GetComponent<PlayerBasicAttack>().bulletSpeed -= dividedAttackCD;
+            float dividedBulletSpd = bulletSpeed / 10f;
+            player.GetComponent<PlayerBasicAttack>().bulletSpeed -= dividedBulletSpd;
 
             if (player.GetComponent<PlayerBasicAttack>().bulletSpeed > 5f)
             {
@@ -48,9 +48,9 @@ public class PerkStats : Perk
         }
 
         // Crit multiplier
-        if (crtiMultiplier != 0f)
+        if (critMultiplier != 0f)
         {
-            player.GetComponent<PlayerBasicAttack>().critMultiplier += crtiMultiplier;
+            player.GetComponent<PlayerBasicAttack>().critMultiplier += critMultiplier;
         }
 
         // Experience multiplier
@@ -74,8 +74,8 @@ public class PerkStats : Perk
         // Movement Speed
         if (movementSpeed != 0f)
         {
-            float dividedAttackCD = movementSpeed / 10f;
-            player.GetComponent<PlayerMoevement>().moveSpeed += movementSpeed;
+            float dividedMovementSpeed = movementSpeed / 10f;
+            player.GetComponent<PlayerMoevement>().moveSpeed += dividedMovementSpeed;
         }
 
         // Shield
