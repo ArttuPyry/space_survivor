@@ -14,6 +14,7 @@ public class PerkStats : Perk
     [SerializeField] private int luck;
     [SerializeField] private float movementSpeed;
     [SerializeField] private int shield;
+    [SerializeField] private int bulletSize;
 
     public override void Apply(GameObject player)
     {
@@ -83,6 +84,11 @@ public class PerkStats : Perk
         {
             player.GetComponent<Player>().currentShieldAmount += shield;
             player.GetComponent<Player>().UpdateShield();
+        }
+
+        if (bulletSize != 0)
+        {
+            player.GetComponent<PlayerBasicAttack>().bulletSize += bulletSize;
         }
     }
 }

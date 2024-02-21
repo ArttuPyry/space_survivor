@@ -46,13 +46,13 @@ public class PlayerPerkManager : MonoBehaviour
         switch (rarity)
         {
             case 0:
-                CommonPerkList[buttonIndex].Apply(this.gameObject);
+                ApplyPerk(CommonPerkList[buttonIndex]);
                 break;
             case 1:
-                RarePerkList[buttonIndex].Apply(this.gameObject);
+                ApplyPerk(RarePerkList[buttonIndex]);
                 break;
             case 2:
-                LegendaryPerkList[buttonIndex].Apply(this.gameObject);
+                ApplyPerk(LegendaryPerkList[buttonIndex]);
                 break;
         }
 
@@ -62,6 +62,26 @@ public class PlayerPerkManager : MonoBehaviour
         perkChoiceOne.GetComponent<Button>().onClick.RemoveAllListeners();
         perkChoiceTwo.GetComponent<Button>().onClick.RemoveAllListeners();
         perkChoiceThree.GetComponent<Button>().onClick.RemoveAllListeners();
+    }
+
+    // Checks perk type and applies it to correct perk list
+    private void ApplyPerk(Perk perk)
+    {
+        switch (perk.perkType)
+        {
+            case Perk.PerkType.ApplyOnce:
+                perk.Apply(this.gameObject);
+                break;
+            case Perk.PerkType.Crit:
+                this.GetComponent<PlayerBasicAttack>().acquiredCritPerks.Add(perk);
+                break;
+            case Perk.PerkType.DamageTaken:
+                this.GetComponent<Player>().acquiredHitPerks.Add(perk);
+                break;
+            case Perk.PerkType.Timed:
+                this.GetComponent<Player>().acquiredTimedPerks.Add(perk);
+                break;
+        }
     }
 
 
@@ -93,4 +113,6 @@ public class PlayerPerkManager : MonoBehaviour
             perkChoice.GetComponent<Button>().onClick.AddListener(() => CloseLevelUpMenu(randomPerk, 0));
         }
     }
+
+
 }

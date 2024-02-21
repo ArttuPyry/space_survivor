@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private float duration;
     public float iFramesLengthInSec = 1f;
-    private float time;
+    private float iFrameTime;
 
     // Experience
     public float currentExperience;
@@ -27,6 +27,13 @@ public class Player : MonoBehaviour
     // Luck
     public int luck;
 
+    // Perks
+    public List<Perk> acquiredHitPerks;
+    public List<Perk> acquiredTimedPerks;
+
+    private float perkTime;
+    public float perkTimeCooldown = 10.0f;
+
     void Start()
     {
         UpdateShield();
@@ -35,7 +42,26 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        time -= Time.deltaTime;
+        iFrameTime -= Time.deltaTime;
+        perkTime -= Time.deltaTime;
+
+        if (perkTime <= 0.0f)
+        {
+            perkTime = perkTimeCooldown;
+            ActivateTimedPerks();
+        }
+
+    }
+
+    private void ActivateTimedPerks()
+    {
+        if (acquiredTimedPerks.Count > 0)
+        {
+            for (int i = 0; i < acquiredTimedPerks.Count; i++)
+            {
+                acquiredTimedPerks[i].Apply(this.gameObject);
+            }
+        }
     }
 
     public void UpdateShield()
@@ -56,9 +82,19 @@ public class Player : MonoBehaviour
 
     public void TakeHit()
     {
-        if (time <= 0.0f)
+        if (iFrameTime <= 0.0f)
         {
 
+            // Activates hit perks
+            if (acquiredHitPerks.Count > 0)
+            {
+                for (int i = 0; i < acquiredHitPerks.Count; i++)
+                {
+                    acquiredHitPerks[i].Apply(this.gameObject);
+                }
+            } 
+
+            // Disables shield icons
             if (currentShieldAmount > 0)
             {
                 for (int i = maxShieldAmount - 1; i != (currentShieldAmount - 2); --i)
@@ -67,9 +103,12 @@ public class Player : MonoBehaviour
                 }
             }
 
-            time = iFramesLengthInSec;
+            // iFrames
+            iFrameTime = iFramesLengthInSec;
             StartCoroutine(FlashRoutine());
             StartCoroutine(IframeFlash());
+
+            // Removes shield or kills 
             if (currentShieldAmount > 0)
             {
                 currentShieldAmount -= 1;
@@ -81,6 +120,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // iFrames and flash effect
     private IEnumerator FlashRoutine()
     {
         spriteRenderer.material = flashMaterial;
@@ -90,7 +130,7 @@ public class Player : MonoBehaviour
     private IEnumerator IframeFlash()
     {
         yield return new WaitForSeconds(duration);
-        while (time > 0.0f)
+        while (iFrameTime > 0.0f)
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
             yield return new WaitForSeconds(0.02f);

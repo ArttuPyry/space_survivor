@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: AttackDamageCommonPerk
   m_EditorClassIdentifier: 
   perkName: Common Attack Upgrade
-  perkDescription: Common Attack Upgrade
+  perkDescription: This common attack upgrade is easy to install and gives 0.25 attack
   perkSprite: {fileID: 0}
   attackSpeed: 0
-  attackDamage: 1
+  attackDamage: 0.25
   bulletSpeed: 0
   critMultiplier: 0
   expMultiplier: 0
